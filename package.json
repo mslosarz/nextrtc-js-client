@@ -1,0 +1,26 @@
+{
+  "name": "nextrtc-js-client",
+  "version": "0.0.4",
+  "description": "JS Client to NextRTC signaling server",
+  "main": "nextRTC.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mslosarz/nextrtc-js-client.git"
+  },
+  "keywords": [
+    "NextRTC",
+    "WebRTC"
+  ],
+  "author": "Marcin Ślósarz <m.slosarz@ahej.pl> (http://software2.pl)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mslosarz/nextrtc-js-client/issues"
+  },
+  "homepage": "https://github.com/mslosarz/nextrtc-js-client#readme",
+  "dependencies": {
+    "webrtc-adapter": "^2.0.3"
+  }
+}
