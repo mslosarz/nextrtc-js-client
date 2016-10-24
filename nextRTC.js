@@ -1,7 +1,7 @@
 'use strict';
 require('webrtc-adapter');
 
-var nextRTC = function NextRTC(config) {
+var NextRTC = function NextRTC(config) {
     if (!(this instanceof NextRTC)) {
         return new NextRTC(config);
     }
@@ -171,11 +171,11 @@ var nextRTC = function NextRTC(config) {
     }
 };
 
-nextRTC.prototype.on = function on(signal, operation) {
+NextRTC.prototype.on = function on(signal, operation) {
     this.signals[signal] = operation;
 };
 
-nextRTC.prototype.create = function create(convId, custom) {
+NextRTC.prototype.create = function create(convId, custom) {
     var nextRTC = this;
     navigator.mediaDevices.getUserMedia(nextRTC.mediaConfig).then(function(stream) {
     nextRTC.localStream = stream;
@@ -186,7 +186,7 @@ nextRTC.prototype.create = function create(convId, custom) {
     }, this.error);
 };
 
-nextRTC.prototype.join = function join(convId, custom) {
+NextRTC.prototype.join = function join(convId, custom) {
     var nextRTC = this;
     navigator.mediaDevices.getUserMedia(nextRTC.mediaConfig).then(function(stream) {
         nextRTC.localStream = stream;
@@ -197,7 +197,7 @@ nextRTC.prototype.join = function join(convId, custom) {
     }, this.error);
 };
 
-nextRTC.prototype.leave = function leave() {
+NextRTC.prototype.leave = function leave() {
     var nextRTC = this;
     nextRTC.request('left');
     nextRTC.signaling.close();
@@ -206,4 +206,4 @@ nextRTC.prototype.leave = function leave() {
     }
 };
 
-module.exports.NextRTC = nextRTC;
+module.exports.NextRTC = NextRTC;
