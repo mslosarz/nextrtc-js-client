@@ -54,6 +54,29 @@ nextRTC.on('{localStream|remoteStream}', function(nextrtc:NextRTC, stream:Stream
 
 });
 ```
+
+## How to send / handle custom signals?
+
+On the js side you have to write two methods. One for sending new signal
+```js
+NextRTC.prototype.upperCase = function upperCase(content, custom) {
+    var nextRTC = this;
+    nextRTC.request('upperCase', null, content, custom);
+}; 
+```
+second one which will react on the response:
+```js
+nextRTC.on('upperCase', content => {
+// here you should handle the response
+});
+```
+Then you will be able to use structure like this to post your custom signal:
+```js
+nexrtc.upperCase('lowerCase');
+```
+
+## Model
+
 Event structure and available events are presented [here](https://github.com/mslosarz/nextrtc-signaling-server)
 
 Event is serialized java version of message.
