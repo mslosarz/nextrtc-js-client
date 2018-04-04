@@ -63,7 +63,8 @@ var NextRTC = function NextRTC(config) {
     };
 
     this.setChannelReady = function () {
-        for (var w in that.waiting) {
+        for (var i=0;i<that.waiting.length; i++) {
+            var w = that.waiting[i];
             console.log("req: " + w);
             that.signaling.send(w);
         }
