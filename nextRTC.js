@@ -1,5 +1,5 @@
 'use strict';
-require('webrtc-adapter');
+const webrtcAdapter = require('webrtc-adapter');
 
 var NextRTC = function NextRTC(config) {
     if (!(this instanceof NextRTC)) {
