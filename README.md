@@ -42,7 +42,7 @@ var nextRTC = new NextRTC({
     ...
 });
 
-nextRTC.on('{eventName}', function(nextrtc:NextRTC, event:Event){
+nextRTC.on('{eventName}', function(event:Event){
     
 });
 ```
@@ -50,7 +50,7 @@ There are two signals which are providing other second parameter type. Those sig
 `localStream` and `remoteStream`, when you are handling local audio/video stream and incoming audio/video stream you can simply attach stream to valid element (without additional action like resolving stream by description provided in event).
 
 ```js
-nextRTC.on('{localStream|remoteStream}', function(nextrtc:NextRTC, stream:Stream){
+nextRTC.on('{localStream|remoteStream}', function({stream: Stream, member: memberId}){
 
 });
 ```
@@ -60,8 +60,7 @@ nextRTC.on('{localStream|remoteStream}', function(nextrtc:NextRTC, stream:Stream
 On the js side you have to write two methods. One for sending new signal
 ```js
 NextRTC.prototype.upperCase = function upperCase(content, custom) {
-    var nextRTC = this;
-    nextRTC.channel.send({signal: 'upperCase', content: 'content', custom: custom});
+    this.channel.send({signal: 'upperCase', content: 'content', custom: custom});
 }; 
 ```
 second one which will react on the response:
