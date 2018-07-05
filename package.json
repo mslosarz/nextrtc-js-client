@@ -1,10 +1,13 @@
 {
   "name": "nextrtc-js-client",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "JS Client to NextRTC signaling server",
-  "main": "nextRTC.js",
+  "main": "distribution/nextRTC.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "npm run build",
+    "pretest": "jshint",
+    "test": "./node_modules/.bin/mocha --recursive",
+    "build": "babel source --out-dir distribution"
   },
   "repository": {
     "type": "git",
@@ -12,7 +15,8 @@
   },
   "keywords": [
     "NextRTC",
-    "WebRTC"
+    "WebRTC",
+    "Signaling Server"
   ],
   "author": "Marcin Ślósarz <m.slosarz@ahej.pl> (http://software2.pl)",
   "license": "MIT",
@@ -21,7 +25,36 @@
   },
   "homepage": "https://github.com/mslosarz/nextrtc-js-client#readme",
   "dependencies": {
-    "webrtc-adapter": "^2.0.3"
+    "webrtc-adapter": "^6.2.1",
+    "rxjs": "^6.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-minify": "^0.4.3",
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.1.2",
+    "chai-string": "^1.4.0",
+    "jshint": "^2.9.5",
+    "mocha": "^5.1.0",
+    "sinon": "^4.5.0",
+    "sinon-chai": "^3.0.0"
+  },
+  "jshintConfig": {
+    "esversion": 6,
+    "predef": [
+      "src",
+      "test",
+      "-Map"
+    ],
+    "strict": true,
+    "boss": true,
+    "node": true,
+    "eqeqeq": true,
+    "newcap": false,
+    "undef": true,
+    "unused": true,
+    "onecase": true,
+    "lastsemic": true,
+    "freeze": true
+  }
 }

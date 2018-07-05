@@ -61,7 +61,7 @@ On the js side you have to write two methods. One for sending new signal
 ```js
 NextRTC.prototype.upperCase = function upperCase(content, custom) {
     var nextRTC = this;
-    nextRTC.request('upperCase', null, content, custom);
+    nextRTC.channel.send({signal: 'upperCase', content: 'content', custom: custom});
 }; 
 ```
 second one which will react on the response:
