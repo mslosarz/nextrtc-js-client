@@ -1,10 +1,4 @@
 # NextRTC JavaScript client
-If you want to use `nextrtc-js-client` you have to add to your code following .js files:
-- adapter.js
-- nextRTC.js
-
-Both files are available in project nextrtc-js-client. Adapter is external resource taken from [here](https://webrtc.github.io/adapter/adapter-latest.js), so if you want to use newest version you should take it direct from [this](https://github.com/webrtc/adapter) project.
-
 NextRTC js client constructor requires:
 
 * **wsURL** which should points to your endpoint `{ws/wss}://{host}:{port}/{applicationName}/{endpointGivenInAnnotation}`
@@ -12,7 +6,7 @@ endpointGivenInAnnotation e.g. – @ServerEndpoint(value = “/signaling” …)
 * **mediaConfig** are passed straight to adapter, so more information about parametres you can find in webrtc/adapter documentation.
 * **peerConfig** are also described in [webrtc/adapter](https://github.com/webrtc/adapter) project.
 
-Example is shown below and it’s also available in [nextrtc-videochat-example](https://github.com/mslosarz/nextrtc-example-videochat)
+Example is shown below and it’s also available in [nextrtc-sample-webapp](https://github.com/mslosarz/nextrtc-sample-webapp)
 
 ```js
 new NextRTC({
