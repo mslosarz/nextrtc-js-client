@@ -1,6 +1,6 @@
 {
   "name": "nextrtc-js-client",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "JS Client to NextRTC signaling server",
   "main": "distribution/nextRTC.js",
   "scripts": {
@@ -25,8 +25,7 @@
   },
   "homepage": "https://github.com/mslosarz/nextrtc-js-client#readme",
   "dependencies": {
-    "webrtc-adapter": "^6.2.1",
-    "rxjs": "^6.0.0"
+    "webrtc-adapter": "^6.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
