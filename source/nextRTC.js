@@ -81,6 +81,12 @@ class SignalingChannel {
     this.websocket.send(JSON.stringify(payload));
   }
 
+  close() {
+    this.websocket.onclose = function () {};
+    this.onSignal('close', event);
+    this.websocket.close();
+  }
+
   setSignal(callback) {
     this.onSignal = callback;
   };

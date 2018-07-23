@@ -1,6 +1,6 @@
 {
   "name": "nextrtc-js-client",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "JS Client to NextRTC signaling server",
   "main": "distribution/nextRTC.js",
   "scripts": {

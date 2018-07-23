@@ -103,6 +103,13 @@ var SignalingChannel = function () {
       this.websocket.send(JSON.stringify(payload));
     }
   }, {
+    key: 'close',
+    value: function close() {
+      this.websocket.onclose = function () {};
+      this.onSignal('close', event);
+      this.websocket.close();
+    }
+  }, {
     key: 'setSignal',
     value: function setSignal(callback) {
       this.onSignal = callback;
