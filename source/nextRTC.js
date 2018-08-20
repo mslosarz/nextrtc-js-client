@@ -83,7 +83,6 @@ class SignalingChannel {
 
   close() {
     this.websocket.onclose = function () {};
-    this.onSignal('close', event);
     this.websocket.close();
   }
 
