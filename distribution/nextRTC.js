@@ -106,7 +106,6 @@ var SignalingChannel = function () {
     key: 'close',
     value: function close() {
       this.websocket.onclose = function () {};
-      this.onSignal('close', event);
       this.websocket.close();
     }
   }, {
