@@ -40,7 +40,8 @@ class Message {
 }
 
 class SignalingChannel {
-  constructor(wsURL) {
+  constructor(wsURL, debug) {
+    this.debug = debug;
     this.onSignal = () => {
     };
     this.waiting = [];
@@ -55,7 +56,9 @@ class SignalingChannel {
     };
 
     this.websocket.onmessage = event => {
-      console.log('res: ' + event.data);
+      if (debug) {
+        console.log('res: ' + event.data);
+      }
       const signal = JSON.parse(event.data);
       this.onSignal(signal.signal, signal);
     };
@@ -65,7 +68,9 @@ class SignalingChannel {
     };
 
     this.websocket.onerror = error => {
-      console.log('Communication channel is broken', error);
+      if (debug) {
+        console.log('Communication channel is broken', error);
+      }
       this.onSignal('error', error);
     };
 
@@ -77,12 +82,15 @@ class SignalingChannel {
         this.waiting.push(payload);
       }
     }
-    console.log('req: ', payload);
+    if (this.debug) {
+      console.log('req: ', payload);
+    }
     this.websocket.send(JSON.stringify(payload));
   }
 
   close() {
-    this.websocket.onclose = function () {};
+    this.websocket.onclose = function () {
+    };
     this.websocket.close();
   }
 
@@ -93,11 +101,13 @@ class SignalingChannel {
 
 class NextRTCClient {
 
-  constructor(configuration) {
+  constructor(configuration, debug = false) {
+    this.debug = debug;
     this.configuration = configuration;
     this.handlers = this.initHandlers();
     this.channel = new SignalingChannel(
-      configuration.wsURL
+      configuration.wsURL,
+      this.debug
     );
     this.localStream = undefined;
     this.peerConnections = {};
@@ -106,7 +116,9 @@ class NextRTCClient {
 
   on(signal, handler) {
     if (this.handlers[signal]) {
-      console.log("Replacing handler for signal: " + signal);
+      if (this.debug) {
+        console.log("Replacing handler for signal: " + signal);
+      }
     }
     this.handlers[signal] = handler;
   }
@@ -219,7 +231,7 @@ class NextRTCClient {
     this.onPeerConnection(message.from, peer => {
         peer.addIceCandidate(new RTCIceCandidate(
           JSON.parse(message.content.replace(new RegExp('\'', 'g'), '"')),
-          () => console.log('candidates exchanged'),
+          () => this.debug ? console.log('candidates exchanged') : null,
           (err) => this.execute('error', 'Candidate: Failed to exchange candidates ' + err)
         ))
       }
@@ -232,7 +244,7 @@ class NextRTCClient {
       remoteConnection = this.peerConnections[connectionName] = new RTCPeerConnection(this.configuration.peerConfig);
       remoteConnection.ontrack = e => this.onRemoteStream(connectionName, e.streams);
       remoteConnection.onicecandidate = event => this.onIceCandidate(connectionName, event)
-      remoteConnection.oniceconnectionstatechange = change => console.log(`(${connectionName}) changed state to`, remoteConnection.iceConnectionState);
+      remoteConnection.oniceconnectionstatechange = change => this.debug ? console.log(`(${connectionName}) changed state to`, remoteConnection.iceConnectionState) : null;
     }
     cb(remoteConnection);
   }
@@ -247,10 +259,13 @@ class NextRTCClient {
       try {
         this.handlers[signal](event);
       } catch (err) {
-        console.log(`User handler on ${signal} failed!`, err);
+        if (this.debug) {
+          console.log(`User handler on ${signal} failed!`, err);
+        }
       }
-    else
+    else if (this.debug) {
       console.log('Missing handler for ' + signal);
+    }
   }
 
   create(conversationId, custom) {

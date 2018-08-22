@@ -58,11 +58,12 @@ var Message = function () {
 }();
 
 var SignalingChannel = function () {
-  function SignalingChannel(wsURL) {
+  function SignalingChannel(wsURL, debug) {
     var _this = this;
 
     _classCallCheck(this, SignalingChannel);
 
+    this.debug = debug;
     this.onSignal = function () {};
     this.waiting = [];
     this.channelReady = false;
@@ -76,7 +77,9 @@ var SignalingChannel = function () {
     };
 
     this.websocket.onmessage = function (event) {
-      console.log('res: ' + event.data);
+      if (debug) {
+        console.log('res: ' + event.data);
+      }
       var signal = JSON.parse(event.data);
       _this.onSignal(signal.signal, signal);
     };
@@ -86,7 +89,9 @@ var SignalingChannel = function () {
     };
 
     this.websocket.onerror = function (error) {
-      console.log('Communication channel is broken', error);
+      if (debug) {
+        console.log('Communication channel is broken', error);
+      }
       _this.onSignal('error', error);
     };
   }
@@ -99,7 +104,9 @@ var SignalingChannel = function () {
           this.waiting.push(payload);
         }
       }
-      console.log('req: ', payload);
+      if (this.debug) {
+        console.log('req: ', payload);
+      }
       this.websocket.send(JSON.stringify(payload));
     }
   }, {
@@ -122,11 +129,14 @@ var NextRTCClient = function () {
   function NextRTCClient(configuration) {
     var _this2 = this;
 
+    var debug = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
     _classCallCheck(this, NextRTCClient);
 
+    this.debug = debug;
     this.configuration = configuration;
     this.handlers = this.initHandlers();
-    this.channel = new SignalingChannel(configuration.wsURL);
+    this.channel = new SignalingChannel(configuration.wsURL, this.debug);
     this.localStream = undefined;
     this.peerConnections = {};
     this.channel.setSignal(function (s, p) {
@@ -138,7 +148,9 @@ var NextRTCClient = function () {
     key: 'on',
     value: function on(signal, handler) {
       if (this.handlers[signal]) {
-        console.log("Replacing handler for signal: " + signal);
+        if (this.debug) {
+          console.log("Replacing handler for signal: " + signal);
+        }
       }
       this.handlers[signal] = handler;
     }
@@ -295,7 +307,7 @@ var NextRTCClient = function () {
 
       this.onPeerConnection(message.from, function (peer) {
         peer.addIceCandidate(new RTCIceCandidate(JSON.parse(message.content.replace(new RegExp('\'', 'g'), '"')), function () {
-          return console.log('candidates exchanged');
+          return _this10.debug ? console.log('candidates exchanged') : null;
         }, function (err) {
           return _this10.execute('error', 'Candidate: Failed to exchange candidates ' + err);
         }));
@@ -316,7 +328,7 @@ var NextRTCClient = function () {
           return _this11.onIceCandidate(connectionName, event);
         };
         remoteConnection.oniceconnectionstatechange = function (change) {
-          return console.log('(' + connectionName + ') changed state to', remoteConnection.iceConnectionState);
+          return _this11.debug ? console.log('(' + connectionName + ') changed state to', remoteConnection.iceConnectionState) : null;
         };
       }
       cb(remoteConnection);
@@ -332,8 +344,12 @@ var NextRTCClient = function () {
       if (this.handlers.hasOwnProperty(signal)) try {
         this.handlers[signal](event);
       } catch (err) {
-        console.log('User handler on ' + signal + ' failed!', err);
-      } else console.log('Missing handler for ' + signal);
+        if (this.debug) {
+          console.log('User handler on ' + signal + ' failed!', err);
+        }
+      } else if (this.debug) {
+        console.log('Missing handler for ' + signal);
+      }
     }
   }, {
     key: 'create',
