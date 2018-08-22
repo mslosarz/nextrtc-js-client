@@ -20,7 +20,7 @@ new NextRTC({
             url : "stun:stun.l.google.com:19302"
         }]
     }
-});
+}/*, optional DEBUG mode /true or false/*/);
 ```
 
 ## How to use nextrtc-js-client on static page?
