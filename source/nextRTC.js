@@ -284,8 +284,10 @@ class NextRTCClient {
   }
 
   release(member) {
-    if (this.peerConnections[member])
+    if (this.peerConnections[member]) {
       this.peerConnections[member].close();
+      delete this.peerConnections[member];
+    }
   }
 
   leave() {
