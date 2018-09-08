@@ -372,7 +372,10 @@ var NextRTCClient = function () {
   }, {
     key: 'release',
     value: function release(member) {
-      if (this.peerConnections[member]) this.peerConnections[member].close();
+      if (this.peerConnections[member]) {
+        this.peerConnections[member].close();
+        delete this.peerConnections[member];
+      }
     }
   }, {
     key: 'leave',
